@@ -95,7 +95,7 @@ int hayColision(const Tablero* t, unsigned char* forma, int anchoPieza, int alto
                 if (tx < 0 || tx >= t->ancho || ty < 0 || ty >= t->alto)
                     return 1;
 
-                if (getBit(t, tx, ty))
+                if (LeerBit(t, tx, ty))
                     return 1;
             }
         }
@@ -111,7 +111,7 @@ void fijarPieza(Tablero* t, unsigned char* forma, int anchoPieza, int altoPieza,
         {
             int bit = (forma[y] >> x) & 1;
             if (bit)
-                setBit(t, posX + x, posY + y, 1);
+                EscribirBit(t, posX + x, posY + y, 1);
         }
     }
 }
