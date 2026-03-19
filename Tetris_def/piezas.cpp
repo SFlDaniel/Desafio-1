@@ -1,6 +1,7 @@
 #include "piezas.h"
 #include <cstdlib>
 #include <iostream>
+#include "tablero.h"
 using namespace std;
 
 void crearPieza(Pieza &p, int tipo)
@@ -38,30 +39,13 @@ void crearPieza(Pieza &p, int tipo)
         p.forma[1] = 0b00000011;
         break;
 
-    case 4: // Z
-        p.ancho = 3;
-        p.alto = 2;
-        p.forma = new unsigned char[p.alto];
-        p.forma[0] = 0b00000011;
-        p.forma[1] = 0b00000110;
-        break;
-
-    case 5: // L
+    case 4: // L
         p.ancho = 2;
         p.alto = 3;
         p.forma = new unsigned char[p.alto];
         p.forma[0] = 0b00000001;
         p.forma[1] = 0b00000001;
         p.forma[2] = 0b00000011;
-        break;
-
-    case 6: // J
-        p.ancho = 2;
-        p.alto = 3;
-        p.forma = new unsigned char[p.alto];
-        p.forma[0] = 0b00000011;
-        p.forma[1] = 0b00000001;
-        p.forma[2] = 0b00000001;
         break;
     }
 }
@@ -93,7 +77,7 @@ void liberarPieza(Pieza &p)
 
 int piezaAleatoria()
 {
-    return rand() % 7;
+    return rand() % 5;
 }
 
 void rotarPieza(Pieza &p)
@@ -122,4 +106,55 @@ void rotarPieza(Pieza &p)
     p.ancho = p.alto;
     p.alto = temp;
     p.forma = nuevaForma;
+}
+
+
+//Movimiento piezas//
+
+
+void inicializarPosicion(int *x, int *y)
+{
+    *x = 0;
+    *y = 0;
+}
+
+
+void moverSeguro(Tablero* t, Pieza &p, int *x, int *y, char direccion)
+{
+    int nuevoX = *x;
+    int nuevoY = *y;
+
+
+    switch(direccion)
+    {
+    case 'a':
+        nuevoX--;
+        break;
+
+    case 'd':
+        nuevoX++;
+        break;
+
+    case 's':
+        nuevoY++;
+        break;
+
+    case 'w':
+        nuevoY--;
+        break;
+    }
+
+
+    if (!hayColision(t, p.forma, p.ancho, p.alto, nuevoX, nuevoY))
+    {
+        *x = nuevoX;
+        *y = nuevoY;
+    }
+}
+
+//Posicion inicial//
+void inicializarPosicionCentro(Tablero* t, Pieza &p, int *x, int *y)
+{
+    *x = (t->ancho - p.ancho) / 2;
+    *y = 0;
 }
