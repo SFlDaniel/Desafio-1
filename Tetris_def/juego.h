@@ -1,4 +1,8 @@
 #ifndef JUEGO_H
 #define JUEGO_H
+#include "tablero.h"
+#include "piezas.h"
 
-#endif // JUEGO_H
+void iniciarJuego();
+
+#endif

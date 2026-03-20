@@ -25,3 +25,71 @@ void dibujar(Tablero* t, Pieza &p, int x, int y)
         cout << endl;
     }
 }
+
+int gameOver(Tablero* t, Pieza &p, int x, int y)
+{
+    return hayColision(t, p.forma, p.ancho, p.alto, x, y);
+}
+
+char leerAccion()
+{
+    char c;
+    cout << "a: izq | d: der | s: bajar | w: rotar ";
+    cin >> c;
+    return c;
+}
+
+void bucleJuego(Tablero* t)
+{
+    Pieza p;
+    int x, y;
+    crearPieza(p, piezaAleatoria());
+    inicializarPosicionCentro(t, p, &x, &y);
+    if(gameOver(t, p, x, y))
+    {
+        cout << "GAME OVER" << endl;
+        return;
+    }
+
+    while(true)
+    {
+        dibujar(t, p, x, y);
+        char accion = leerAccion();
+        if(accion == 'w')
+        {
+            rotarSeguro(t, p, x, y);
+        }
+        else
+        {
+            int oldY = y;
+            moverSeguro(t, p, &x, &y, accion);
+
+            if(accion == 's' && y == oldY)
+            {
+                fijarPieza(t, p.forma, p.ancho, p.alto, x, y);
+                eliminarFilas(t);
+                liberarPieza(p);
+                crearPieza(p, piezaAleatoria());
+                inicializarPosicionCentro(t, p, &x, &y);
+
+                if(gameOver(t, p, x, y))
+                {
+                    cout << "GAME OVER" << endl;
+                    break;
+                }
+            }
+        }
+    }
+    liberarPieza(p);
+}
+void iniciarJuego()
+{
+    int ancho = 8;
+    int alto = 10;
+
+    Tablero* t = crearTablero(ancho, alto);
+
+    bucleJuego(t);
+
+    destruirTablero(t);
+}

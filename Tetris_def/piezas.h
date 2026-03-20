@@ -10,6 +10,8 @@ struct Pieza
     int alto;
 };
 
+int piezaAleatoria();
+void rotarSeguro(Tablero* t, Pieza &p, int x, int y);
 void crearPieza(Pieza &p, int tipo);
 void imprimirPieza(Pieza &p);
 void liberarPieza(Pieza &p);
