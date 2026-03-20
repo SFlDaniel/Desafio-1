@@ -17,8 +17,8 @@ void destruirTablero(Tablero* t);
 void limpiarTablero(Tablero* t);
 
 // Lectura / Escritura de bits
-int getBit(const Tablero* t, int x, int y);
-void setBit(Tablero* t, int x, int y, int valor);
+int LeerBit(const Tablero* t, int x, int y);
+void EscribirBit(Tablero* t, int x, int y, int valor);
 
 // Filas
 int filaLlena(const Tablero* t, int y);

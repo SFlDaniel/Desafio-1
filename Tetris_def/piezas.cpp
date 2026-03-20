@@ -80,37 +80,39 @@ int piezaAleatoria()
     return rand() % 5;
 }
 
-void rotarPieza(Pieza &p)
+void rotarSeguro(Tablero* t, Pieza &p, int x, int y)
 {
     unsigned char* nuevaForma = new unsigned char[p.ancho];
-    // inicializar en 0
+
     for(int i = 0; i < p.ancho; i++)
         nuevaForma[i] = 0;
 
-    for(int y = 0; y < p.alto; y++)
+    for(int i = 0; i < p.alto; i++)
     {
-        for(int x = 0; x < p.ancho; x++)
+        for(int j = 0; j < p.ancho; j++)
         {
-            int bit = (p.forma[y] >> x) & 1;
+            int bit = (p.forma[i] >> j) & 1;
 
             if(bit)
-            {
-                // rotación 90°: (x, y) -> (y, ancho-1-x)
-                nuevaForma[x] |= (1 << (p.alto - 1 - y));
-            }
+                nuevaForma[j] |= (1 << (p.alto - 1 - i));
         }
     }
-    delete[] p.forma;
 
-    int temp = p.ancho;
-    p.ancho = p.alto;
-    p.alto = temp;
-    p.forma = nuevaForma;
+    int nuevoAncho = p.alto;
+    int nuevoAlto = p.ancho;
+
+    if(!hayColision(t, nuevaForma, nuevoAncho, nuevoAlto, x, y))
+    {
+        delete[] p.forma;
+        p.forma = nuevaForma;
+        p.ancho = nuevoAncho;
+        p.alto = nuevoAlto;
+    }
+    else
+    {
+        delete[] nuevaForma;
+    }
 }
-
-
-//Movimiento piezas//
-
 
 void inicializarPosicion(int *x, int *y)
 {
@@ -118,12 +120,10 @@ void inicializarPosicion(int *x, int *y)
     *y = 0;
 }
 
-
 void moverSeguro(Tablero* t, Pieza &p, int *x, int *y, char direccion)
 {
     int nuevoX = *x;
     int nuevoY = *y;
-
 
     switch(direccion)
     {
@@ -139,11 +139,9 @@ void moverSeguro(Tablero* t, Pieza &p, int *x, int *y, char direccion)
         nuevoY++;
         break;
 
-    case 'w':
-        nuevoY--;
-        break;
+    default:
+        return;
     }
-
 
     if (!hayColision(t, p.forma, p.ancho, p.alto, nuevoX, nuevoY))
     {
@@ -152,7 +150,6 @@ void moverSeguro(Tablero* t, Pieza &p, int *x, int *y, char direccion)
     }
 }
 
-//Posicion inicial//
 void inicializarPosicionCentro(Tablero* t, Pieza &p, int *x, int *y)
 {
     *x = (t->ancho - p.ancho) / 2;
