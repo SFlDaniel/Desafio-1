@@ -65,17 +65,14 @@ void eliminarFilas(Tablero* t)
     {
         if (filaLlena(t, y))
         {
-            // mover todo hacia abajo
             for (int k = y; k > 0; k--)
             {
                 for (int b = 0; b < t->bytesPorFila; b++)
                     t->datos[k * t->bytesPorFila + b] = t->datos[(k - 1) * t->bytesPorFila + b];
             }
-            // limpiar fila superior
             for (int b = 0; b < t->bytesPorFila; b++)
                 t->datos[b] = 0;
-
-            y++; // revisar fila actual nuevamente
+            y++;
         }
     }
 }

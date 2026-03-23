@@ -50,25 +50,6 @@ void crearPieza(Pieza &p, int tipo)
     }
 }
 
-void imprimirPieza(Pieza &p)
-{
-    for(int i = 0; i < p.alto; i++)
-    {
-        unsigned char mascara = 1;
-
-        for(int j = 0; j < p.ancho; j++)
-        {
-            if(p.forma[i] & mascara)
-                cout << "[]";
-            else
-                cout << "  ";
-
-            mascara <<= 1;
-        }
-        cout << endl;
-    }
-}
-
 void liberarPieza(Pieza &p)
 {
     delete[] p.forma;
@@ -112,12 +93,6 @@ void rotarSeguro(Tablero* t, Pieza &p, int x, int y)
     {
         delete[] nuevaForma;
     }
-}
-
-void inicializarPosicion(int *x, int *y)
-{
-    *x = 0;
-    *y = 0;
 }
 
 void moverSeguro(Tablero* t, Pieza &p, int *x, int *y, char direccion)
