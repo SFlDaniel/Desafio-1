@@ -1,6 +1,7 @@
 TEMPLATE = app
 TARGET = MiProyecto
 QT += core gui
+CONFIG += console
 
 SOURCES += Tetris_def/main.cpp \
            Tetris_def/juego.cpp \
